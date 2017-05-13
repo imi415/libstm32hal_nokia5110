@@ -117,9 +117,9 @@ void LCD_Init(void) {
  * Reset LCD.
  */
 void LCD_Reset(void) {
-  HAL_GPIO_WritePin(GPIOA, RST_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, LCD_PIN_RESET, GPIO_PIN_RESET);
   HAL_Delay(50);
-  HAL_GPIO_WritePin(GPIOA, RST_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOA, LCD_PIN_RESET, GPIO_PIN_SET);
 }
 
 /**
@@ -177,14 +177,14 @@ void LCD_Write_String(uint8_t PosX, uint8_t PosY, char * str) {
  * @param cmd command to write.
  */
 void LCD_Write_Command(uint8_t cmd) {
-  HAL_GPIO_WritePin(GPIOA, CE_Pin, GPIO_PIN_RESET);
-  HAL_GPIO_WritePin(GPIOA, DC_Pin, GPIO_PIN_RESET);
-  HAL_SPI_Transmit_DMA(&hspi1, &cmd, 0x01);
+  HAL_GPIO_WritePin(GPIOA, LCD_PIN_CE, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, LCD_PIN_DC, GPIO_PIN_RESET);
+  HAL_SPI_Transmit_DMA(&LCD_SPI_INTERFACE, &cmd, 0x01);
   while(!spiOK) {
 
   }
-  HAL_GPIO_WritePin(GPIOA, CE_Pin, GPIO_PIN_SET);
-  HAL_GPIO_WritePin(GPIOA, DC_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOA, LCD_PIN_CE, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOA, LCD_PIN_DC, GPIO_PIN_SET);
   spiOK = 0;
 }
 
@@ -193,14 +193,14 @@ void LCD_Write_Command(uint8_t cmd) {
  * @param data data to write.
  */
 void LCD_Write_Data(uint8_t data) {
-  HAL_GPIO_WritePin(GPIOA, CE_Pin, GPIO_PIN_RESET);
-  HAL_GPIO_WritePin(GPIOA, DC_Pin, GPIO_PIN_SET);
-  HAL_SPI_Transmit_DMA(&hspi1, &data, 0x01);
+  HAL_GPIO_WritePin(GPIOA, LCD_PIN_CE, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, LCD_PIN_DC, GPIO_PIN_SET);
+  HAL_SPI_Transmit_DMA(&LCD_SPI_INTERFACE, &data, 0x01);
   while(!spiOK) {
 
   }
-  HAL_GPIO_WritePin(GPIOA, CE_Pin, GPIO_PIN_SET);
-  HAL_GPIO_WritePin(GPIOA, DC_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, LCD_PIN_CE, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOA, LCD_PIN_DC, GPIO_PIN_RESET);
   spiOK = 0;
 }
 
