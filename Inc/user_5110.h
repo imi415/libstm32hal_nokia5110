@@ -6,6 +6,8 @@
 #define LCD_PIN_DC DC_Pin // Data_Command select pin.
 #define LCD_SPI_INTERFACE hspi1 // LCD SPI interface.
 
+#define LCD_MAX_TIMEOUT_TICKS 1000
+
 void LCD_Init(void);
 void LCD_Reset(void);
 void LCD_Write_Command(uint8_t cmd);

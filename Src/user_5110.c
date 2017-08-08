@@ -180,8 +180,11 @@ void LCD_Write_Command(uint8_t cmd) {
   HAL_GPIO_WritePin(GPIOA, LCD_PIN_CE, GPIO_PIN_RESET);
   HAL_GPIO_WritePin(GPIOA, LCD_PIN_DC, GPIO_PIN_RESET);
   HAL_SPI_Transmit_DMA(&LCD_SPI_INTERFACE, &cmd, 0x01);
+  uint32_t tickStart = HAL_GetTick();
   while(!spiOK) {
-
+    if ((HAL_GetTick() - tickStart) > LCD_MAX_TIMEOUT_TICKS) {
+      break; // Oops!
+    }
   }
   HAL_GPIO_WritePin(GPIOA, LCD_PIN_CE, GPIO_PIN_SET);
   HAL_GPIO_WritePin(GPIOA, LCD_PIN_DC, GPIO_PIN_SET);
@@ -196,8 +199,11 @@ void LCD_Write_Data(uint8_t data) {
   HAL_GPIO_WritePin(GPIOA, LCD_PIN_CE, GPIO_PIN_RESET);
   HAL_GPIO_WritePin(GPIOA, LCD_PIN_DC, GPIO_PIN_SET);
   HAL_SPI_Transmit_DMA(&LCD_SPI_INTERFACE, &data, 0x01);
+  uint32_t tickStart = HAL_GetTick();
   while(!spiOK) {
-
+    if ((HAL_GetTick() - tickStart) > LCD_MAX_TIMEOUT_TICKS) {
+      break; // Oops!
+    }
   }
   HAL_GPIO_WritePin(GPIOA, LCD_PIN_CE, GPIO_PIN_SET);
   HAL_GPIO_WritePin(GPIOA, LCD_PIN_DC, GPIO_PIN_RESET);
