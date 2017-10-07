@@ -117,9 +117,9 @@ void LCD_Init(void) {
  * Reset LCD.
  */
 void LCD_Reset(void) {
-  HAL_GPIO_WritePin(GPIOA, LCD_PIN_RESET, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(LCD_RESET_PORT, LCD_RESET_PIN, GPIO_PIN_RESET);
   HAL_Delay(50);
-  HAL_GPIO_WritePin(GPIOA, LCD_PIN_RESET, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(LCD_RESET_PORT, LCD_RESET_PIN, GPIO_PIN_SET);
 }
 
 /**
@@ -177,8 +177,8 @@ void LCD_Write_String(uint8_t PosX, uint8_t PosY, char * str) {
  * @param cmd command to write.
  */
 void LCD_Write_Command(uint8_t cmd) {
-  HAL_GPIO_WritePin(GPIOA, LCD_PIN_CE, GPIO_PIN_RESET);
-  HAL_GPIO_WritePin(GPIOA, LCD_PIN_DC, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(LCD_CE_PORT, LCD_CE_PIN, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(LCD_DC_PORT, LCD_DC_PIN, GPIO_PIN_RESET);
   HAL_SPI_Transmit_DMA(&LCD_SPI_INTERFACE, &cmd, 0x01);
   uint32_t tickStart = HAL_GetTick();
   while(!spiOK) {
@@ -186,8 +186,8 @@ void LCD_Write_Command(uint8_t cmd) {
       break; // Oops!
     }
   }
-  HAL_GPIO_WritePin(GPIOA, LCD_PIN_CE, GPIO_PIN_SET);
-  HAL_GPIO_WritePin(GPIOA, LCD_PIN_DC, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(LCD_CE_PORT, LCD_CE_PIN, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(LCD_DC_PORT, LCD_DC_PIN, GPIO_PIN_SET);
   spiOK = 0;
 }
 
@@ -196,8 +196,8 @@ void LCD_Write_Command(uint8_t cmd) {
  * @param data data to write.
  */
 void LCD_Write_Data(uint8_t data) {
-  HAL_GPIO_WritePin(GPIOA, LCD_PIN_CE, GPIO_PIN_RESET);
-  HAL_GPIO_WritePin(GPIOA, LCD_PIN_DC, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(LCD_CE_PORT, LCD_CE_PIN, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(LCD_DC_PORT, LCD_DC_PIN, GPIO_PIN_SET);
   HAL_SPI_Transmit_DMA(&LCD_SPI_INTERFACE, &data, 0x01);
   uint32_t tickStart = HAL_GetTick();
   while(!spiOK) {
@@ -205,8 +205,8 @@ void LCD_Write_Data(uint8_t data) {
       break; // Oops!
     }
   }
-  HAL_GPIO_WritePin(GPIOA, LCD_PIN_CE, GPIO_PIN_SET);
-  HAL_GPIO_WritePin(GPIOA, LCD_PIN_DC, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(LCD_CE_PORT, LCD_CE_PIN, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(LCD_DC_PORT, LCD_DC_PIN, GPIO_PIN_RESET);
   spiOK = 0;
 }
 
@@ -214,6 +214,6 @@ void LCD_Write_Data(uint8_t data) {
  * HAL SPI transfer complete callback
  * @param hspi HAL SPI handler.
  */
-void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi) {
+void LCD_Callback(void) {
   spiOK = 1;
 }
