@@ -2,15 +2,15 @@
 #define __USER_5110_H_
 
 #define LCD_RESET_PIN BOARD_LCD_RST_Pin // LCD reset pin.
-#define LCD_RESET_PORT BOARD_LCD_RST_Port
+#define LCD_RESET_PORT BOARD_LCD_RST_GPIO_Port
 
 #define LCD_CE_PIN BOARD_LCD_CE_Pin // Use hardware SPI NSS pin or define here.
-#define LCD_CE_PORT BOARD_LCD_CE_Port
+#define LCD_CE_PORT BOARD_LCD_CE_GPIO_Port
 
-#define LCD_DC_PIN DC_Pin // Data_Command select pin.
-#define LCD_DC_PORT BOARD_LCD_DC_Port
+#define LCD_DC_PIN BOARD_LCD_DC_Pin // Data_Command select pin.
+#define LCD_DC_PORT BOARD_LCD_DC_GPIO_Port
 
-#define LCD_SPI_INTERFACE hspi1 // LCD SPI interface.
+#define LCD_SPI_INTERFACE BOARD_LCD_SPI_INTERFACE // LCD SPI interface.
 
 #define LCD_MAX_TIMEOUT_TICKS 1000
 

@@ -1,3 +1,5 @@
+#include "user_board.h"
+
 #include "gpio.h"
 #include "spi.h"
 
